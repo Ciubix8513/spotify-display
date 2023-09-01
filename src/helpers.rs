@@ -15,7 +15,7 @@ pub fn add_linebreaks(string: &str, length: usize) -> String {
         data.push(string.chars().nth(i).unwrap_or_default());
         if (i % length) == 0 && i != 0 {
             // println!("data len = {}", data.len());
-            data.replace_range(last_whitespace..last_whitespace + 1, "\n");
+            data.replace_range(last_whitespace..=last_whitespace, "\n");
         }
     }
     data

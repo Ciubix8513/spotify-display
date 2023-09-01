@@ -1,3 +1,4 @@
+#![allow(clippy::module_name_repetitions)]
 use dbus::{
     arg::PropMap,
     blocking::{stdintf::org_freedesktop_dbus::Properties, Connection},
@@ -19,11 +20,11 @@ impl SpotifyData {
         let artists = self
             .data
             .get("xesam:artist")
-            .ok_or(dbus::Error::new_failed("Empty artists list"))?
+            .ok_or_else(|| dbus::Error::new_failed("Empty artists list"))?
             .0
             .as_iter()
-            .ok_or(dbus::Error::new_failed("Could not iterate over artists"))?
-            .map(|a| a.as_str().unwrap())
+            .ok_or_else(|| dbus::Error::new_failed("Could not iterate over artists"))?
+            .map(|a| a.as_str().expect("It broke hehe"))
             .collect::<Vec<&str>>();
         Ok(artists.join(", ").trim_end_matches(", ").to_string())
     }
@@ -31,10 +32,10 @@ impl SpotifyData {
         let title = self
             .data
             .get("xesam:title")
-            .ok_or(dbus::Error::new_failed("Failed to retrieve title"))?
+            .ok_or_else(|| dbus::Error::new_failed("Failed to retrieve title"))?
             .0
             .as_str()
-            .ok_or(dbus::Error::new_failed("Failed to transform into str"))?;
+            .ok_or_else(|| dbus::Error::new_failed("Failed to transform into str"))?;
         Ok(title.to_string())
     }
 }

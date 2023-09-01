@@ -13,7 +13,7 @@ mod helpers;
 mod spotify;
 
 fn main() -> Result<(), std::io::Error> {
-    let spotify = Spotify::new().unwrap();
+    let spotify = Spotify::new().expect("Failed to init dbus spotify");
 
     enable_raw_mode()?;
     let mut stdout = std::io::stdout();
